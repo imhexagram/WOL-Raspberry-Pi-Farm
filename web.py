@@ -212,10 +212,10 @@ class wol():
             t_raspi.start()
         q_raspi.join()
 
-        poe1=self.raspi.poe_status("172.25.206.99")
-        poe2=self.raspi.poe_status("172.25.206.98")
-        puissance1=self.raspi.raspi_status("172.25.206.99")
-        puissance2=self.raspi.raspi_status("172.25.206.98")
+        poe1=self.raspi.poe_status("@IP switch1")
+        poe2=self.raspi.poe_status("@IP switch2")
+        puissance1=self.raspi.raspi_status("@IP switch1")
+        puissance2=self.raspi.raspi_status("@IP switch2")
         for i in allinfo:
             if(i[2].startswith(switch)): #filtrage switch
                 allinfo_list=list(i)
