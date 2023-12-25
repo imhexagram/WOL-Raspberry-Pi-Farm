@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8" />
+        <title>Wake On Lan - IUT de Valence</title>
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" rel="stylesheet">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+	</head>
+    <body>
+		<div class="jumbotron text-center" style="margin-bottom: 0;">
+			<h2>Wake On Lan -IUT de Valence</h2>
+			<p>Appli web du projet WOL</p>
+		</div>
+
+		<nav class="navbar navbar-expand-sm bg-light">
+			<ul class="navbar-nav">
+			  <li class="nav-item">
+				<a class="nav-link" href="/index">Accueil</a>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link" href="/static/Auth.html">Authentification</a>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link" href="../Raspi">Raspi</a>
+			  </li>
+			</ul>
+		</nav>
+
+		<p1>Bonjour, bienvenu dans notre site! Ici vous pouvez superviser les machines.</p1>
+		<button type="button" class="btn btn-info btn-sm" onclick="help()">help</button><br/><hr/>
+		<script>
+			function help(){
+				alert("Lorsque la machine est éteinte, l'heure de démarrage est nulle. \nIl faut du temps pour 'Renouveler' et 'Réveiller'. \nVeuillez 'Renouveler' manuellement environ une minute après le 'Réveiller', si la machine ne toujour pas en ligne, le rack a peut-être été emporté.")
+			}
+		</script>
+		<br>
+		
+		<form method="post" action="../Renouveler">
+            <p2>Liste des PC de la salle : </p2>
+			<button type="submit" class="btn btn-sm btn-primary">Renouveler</button></br>
+			<label>Salle : </label>  
+			<select name="salle">
+				<option value="" selected="selected">All</option>
+				<option value="172.21">C113</option>
+				<option value="172.25">D102</option>
+				<option value="172.23">D103</option>
+				<option value="172.24">D106</option>
+			</select>
+			<label>Ordre : </label>  
+			<select name="ordre">
+				<option value="0" selected="selected">ID</option>
+				<option value="1">Hostname</option>
+				<option value="5">Nom étudiant</option>
+				<option value="6">Group</option>
+				<option value="2">IP</option>
+				<option value="7">Temps de démarrage</option>
+			</select>
+			<label>Recherche : </label>
+			<input type="text" value="" name="textRe" />
+			<hr/>
+		</form>
+			<div class="table-responsive">
+				<table class="table table-hover table-bordered thead-light">
+					<tr>
+						<th>ID</th>
+						<th>Hostname</th>
+						<th>Nom étudiant</th>
+						<th>Group</th>
+						<th>Addr_IP</th>
+						<th>Addr_MAC</th>
+						<th>Heure de démarrage</th>
+						<th>Temps de démarrage</th>
+						<th>Boutton</th>
+					</tr>
+					%for a,b,c,d,e,f,g,h in variable :
+						<tr>
+							<td>${a}</td>
+							<td>${b}</td>
+							<td>${f}</td>
+							<td>${g}</td>
+							<td>${c}</td>
+							<td>${d}</td>
+							<td>${e}</td>
+							<td>${h}</td>
+							<td>
+								<form method="post" action="../Reveiller">
+								<button type="submit" class="btn btn-light" name="hostname" value=${b}>Réveiller</button>
+								</form>
+								<form method="post" action="../Supprimer">
+								<button type="submit" class="btn btn-danger" name="pc" value=${a} onclick="return window.confirm('Etes-vous sûr?');">Supprimer</button>
+								</form>
+							</td>
+						</tr>
+					%endfor
+				</table></br>
+			</div>
+		<hr/>
+		<div class="jumbotron text-center" style="margin-bottom: 0;">
+			<h4>Bon Courage</h4>
+		<p id="auteur">@2021 R&T Projet WOL&FermeRaspi - Ziyi LIU</p>
+		</div>
+    </body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8" />
+        <title>Wake On Lan - IUT de Valence</title>
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" rel="stylesheet">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+	</head>
+    <body>
+		<div class="jumbotron text-center" style="margin-bottom: 0;">
+			<h2>Wake On Lan -IUT de Valence</h2>
+			<p>Appli web du projet WOL</p>
+		</div>
+
+		<nav class="navbar navbar-expand-sm bg-light">
+			<ul class="navbar-nav">
+			  <li class="nav-item">
+				<a class="nav-link" href="/index">Accueil</a>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link" href="/static/Auth.html">Authentification</a>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link" href="../Renouveler?salle=1&ordre=0&textRe=">Machine</a>
+			  </li>
+			</ul>
+		</nav>
+
+		<p1>Bonjour, bienvenu dans notre site! Ici vous pouvez superviser les raspberry pi.</p1>
+		<button type="button" class="btn btn-info btn-sm" onclick="help()">help</button><br/><hr/>
+		<script>
+			function help(){
+				alert("Le bouton 'Réveiller' fonctionne seulement pour Status=Off et PoE Mode=Shutdown. \nLe bouton 'Arrêter' éteint le Raspi et mettre PoE Mode=Shutdown. \nLe bouton 'Stop' met PoE Mode=Shutdown, si le status Raspi est 'On', arrêt violent.")
+			}
+		</script>
+		<script type="text/javascript">
+			var isCheckAll=false;
+			function swapCheck(){
+				if(isCheckAll){
+					$("input[type='checkbox'").each(function(){
+						this.checked=false;
+					});
+					isCheckAll=false;
+				}else{
+					$("input[type='checkbox'").each(function(){
+						this.checked=true;
+					});
+					isCheckAll=true;
+				}
+			}
+		</script>
+		<br>
+		
+		<form method="post" action="../Renouveler_Raspi">
+            <p2>Liste des Raspberry Pi : </p2>
+			<button type="submit" class="btn btn-sm btn-primary">Renouveler</button></br>
+			<label>Switch : </label>  
+			<select name="switch">
+				<option value="172.25" selected="selected">All</option>
+				<option value="172.25.206.99">Switch1</option>
+				<option value="172.25.206.98">Switch2</option>
+			</select>
+			<hr/>
+		</form>
+		<form method="post" action="../Action_Raspi">
+			<select name="choix">
+				<option value="" selected="selected"></option>
+				<option value="reveiller">Réveiller</option>
+				<option value="arreter">Arrêter</option>
+				<option value="stop">Stop PoE</option>
+				<option value="changer">Changer Image</option>
+				<option value="recharger">Recharger Image</option>
+			</select>
+			<select name="image">
+				<option value="" selected="selected"></option>
+				%for a in image_list :
+					<option value=${a}>${a}</option>
+				%endfor
+			</select>
+			<button type="submit" class="btn btn-sm btn-primary">Valider</button>
+		
+			<div class="table-responsive">
+				<table class="table table-hover table-bordered thead-light">
+					<tr>
+						<th><input type="checkbox" onclick="swapCheck()"></th>
+						<th>ID</th>
+						<th>Hostname</th>
+						<th>Switch</th>
+						<th>Port</th>
+						<th>Image</th>
+						<th>Recharge</th>
+						<th>Status</th>
+						<th>PoE Mode</th>
+						<th>Boutton</th>
+					</tr>
+					%for a,b,c,d,e,f,g,h in variable :
+						<tr>
+							<td><input type="checkbox" name="hostnames" value=${b}></td>
+							<td>${a}</td>
+							<td>${b}</td>
+							<td>${c}</td>
+							<td>${d}</td>
+							<td>${e}</td>
+							<td>${f}</td>
+							<td>${g}</td>
+							<td>${h}</td>
+							<td>
+								<table>
+								<tr>
+
+								<form method="post" action="../Reveiller_Raspi">
+								<button type="submit" class="btn btn-light" name="hostname" value=${b}>Réveiller</button>
+								</form>
+								<form method="post" action="../Arreter_Raspi">
+									<button type="submit" class="btn btn-light" name="hostname" value=${b}>Arrêter</button>
+								</form>
+								<form method="post" action="../Stop_Raspi">
+									<button type="submit" class="btn btn-danger" name="hostname" value=${b} onclick="return window.confirm('Etes-vous sûr?');">Stop PoE</button>
+								</form>
+
+								</tr>
+								</table>
+							</td>
+						</tr>
+					%endfor
+				</table></br>
+			</div>
+		</form>
+		<hr/>
+		<div class="jumbotron text-center" style="margin-bottom: 0;">
+			<h4>Bon Courage</h4>
+		<p id="auteur">@2021 R&T Projet WOL&FermeRaspi - Ziyi LIU</p>
+		</div>
+    </body>
+</html>
