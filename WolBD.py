@@ -17,8 +17,8 @@ from os import getcwd
 
 _host="localhost"
 _user="root"
-_pass="iutval"
-_nomBase="wol"
+_pass=""
+_nomBase=""
     
 # les 2 fonctions suivantes permettent de récupérer une connexion et un curseur
 def getdb(host=_host,user=_user,passwd=_pass,dbname=_nomBase) :
